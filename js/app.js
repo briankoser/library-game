@@ -8,6 +8,13 @@ document.addEventListener('alpine:init', () => {
 
     heartBeat() {
         this.dollars += 1;
+    },
+
+    buyBook() {
+        if (this.dollars >= 5) {
+            this.dollars -= 5;
+            this.books += 1;
+        }
     }
   }))
 });
