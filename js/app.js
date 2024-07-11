@@ -12,7 +12,7 @@ document.addEventListener('alpine:init', () => {
         setInterval(() => { this.heartBeat() }, 1000);
         createInitialConsole(this);
         BOOKS = await loadBooks();
-        console.log(BOOKS);
+        BOOKS = shuffle(BOOKS);
     },
 
     heartBeat() {
@@ -28,7 +28,8 @@ document.addEventListener('alpine:init', () => {
     },
     buyBook() {
         if (this.dollars >= 5) {
-            this.addStatus('You bought a book.');
+            let book = getRandomBook();
+            this.addStatus(`You bought ${book.title} by ${book.author}`);
             this.dollars -= 5;
             this.bookCount += 1;
             this.booksPurchased += 1;
@@ -40,24 +41,46 @@ document.addEventListener('alpine:init', () => {
 async function loadBooks() {
     const url = 'https://librarygame.koser.us/data/books.csv';
     try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Load books: ${response.status}`);
-      }
-  
-      const csv = await d3.csvParse(response);
-      console.log(csv);
-      return csv;
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Load books: ${response.status}`);
+        }
+    
+        const text = await response.text();
+        const csv = await d3.csvParse(text);
+        return csv;
     } catch (error) {
-      console.error(error.message);
-      return [];
+        console.error(error.message);
+        return [];
     }
   }
   
-  function createInitialConsole(self) {
+function createInitialConsole(self) {
     self.addStatus('A beginning is the time for taking the most');
     self.addStatus('delicate care that the balances are correct.');
     self.addStatus('Frank Herbert, Dune');
     self.addStatus('********************************************');
     self.addStatus('You decide to start a library.');
-  }
+}
+
+function getRandomBook() {
+    return BOOKS.pop();
+}
+
+function shuffle(array) {
+    var m = array.length, t, i;
+  
+    // While there remain elements to shuffle…
+    while (m) {
+  
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * m--);
+  
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+  
+    return array;
+}
