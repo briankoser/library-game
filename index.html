@@ -9,18 +9,28 @@
     <meta name="description" content="An idle clicker game about books">
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
     <main x-data="app">
-        <div>
-            Books: <span x-text="books"></span>
+        <div class="console">
+            <ol class="console-list">
+                <template x-for="status in statuses">
+                    <li x-text="status"></li>
+                </template>
+            </ol>
         </div>
-        <div>
-            Dollars: $<span x-text="dollars"></span>
+        <div class="dashboard">
+            <div>
+                Books: <span x-text="books"></span>
+            </div>
+            <div>
+                Dollars: $<span x-text="dollars"></span>
+            </div>
         </div>
 
         <div>
-            <button @click="books++">Buy book</button>         
+            <button @click="buyBook">Buy book for $5</button>         
         </div>
     </main>
     <script src="js/app.js"></script>
