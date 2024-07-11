@@ -8,6 +8,7 @@
     <title>Library game</title>
     <meta name="description" content="An idle clicker game about books">
 
+    <script defer src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="css/app.css">
 </head>
@@ -22,7 +23,7 @@
         </div>
         <div class="dashboard">
             <div>
-                Books: <span x-text="books"></span>
+                Books: <span x-text="bookCount"></span>
             </div>
             <div>
                 Dollars: $<span x-text="dollars"></span>
@@ -33,6 +34,7 @@
             <button @click="buyBook">Buy book for $5</button>         
         </div>
     </main>
-    <script src="js/app.js"></script>
+    <!-- <script type="module" src="js/app.js"></script> -->
+    <script src="js/app.js"></script> <!-- use for local dev -->
 </body>
 </html>

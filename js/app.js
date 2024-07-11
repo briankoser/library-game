@@ -1,28 +1,18 @@
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-
 const STATUS_LIMIT = 5;
-let TITLES = [
-
-]
+let BOOKS = [];
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('app', () => ({
-	books: 0,
+	bookCount: 0,
 	booksPurchased: 0,
 	dollars: 0,
     statuses: [],
 
     async init() {
         setInterval(() => { this.heartBeat() }, 1000);
-
-        this.addStatus('A beginning is the time for taking the most');
-        this.addStatus('delicate care that the balances are correct.');
-        this.addStatus('Frank Herbert, Dune');
-        this.addStatus('********************************************');
-        this.addStatus('You decide to start a library.');
-
-        const res = d3.csvParse("Name,Age\nJane,29\nJoe,33");
-        console.log(res);      
+        createInitialConsole(this);
+        BOOKS = await loadBooks();
+        console.log(BOOKS);
     },
 
     heartBeat() {
@@ -40,9 +30,34 @@ document.addEventListener('alpine:init', () => {
         if (this.dollars >= 5) {
             this.addStatus('You bought a book.');
             this.dollars -= 5;
-            this.books += 1;
+            this.bookCount += 1;
             this.booksPurchased += 1;
         }
     }
   }))
 });
+
+async function loadBooks() {
+    const url = 'https://librarygame.koser.us/data/books.csv';
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Load books: ${response.status}`);
+      }
+  
+      const csv = await d3.csvParse(response);
+      console.log(csv);
+      return csv;
+    } catch (error) {
+      console.error(error.message);
+      return [];
+    }
+  }
+  
+  function createInitialConsole(self) {
+    self.addStatus('A beginning is the time for taking the most');
+    self.addStatus('delicate care that the balances are correct.');
+    self.addStatus('Frank Herbert, Dune');
+    self.addStatus('********************************************');
+    self.addStatus('You decide to start a library.');
+  }
