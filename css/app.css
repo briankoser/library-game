@@ -1,0 +1,15 @@
+.console {
+    display: flex;
+    flex-direction: column;
+    font-family: monospace;
+    background-color: brown;
+    color: white;
+    height: 6em;
+    padding: 0.2em;
+}
+
+.console-list {
+    list-style: none;
+    margin-top: auto;
+    padding: 0.2em;
+}
