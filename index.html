@@ -33,6 +33,10 @@
         <div>
             <button @click="buyBook">Buy book for $5</button>         
         </div>
+
+        <div x-show="win">
+            You have 1000 books and your library is a success!
+        </div>
     </main>
     <!-- <script type="module" src="js/app.js"></script> -->
     <script src="js/app.js"></script> <!-- use for local dev -->

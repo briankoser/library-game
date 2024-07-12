@@ -26,6 +26,7 @@ document.addEventListener('alpine:init', () => {
             this.statuses = this.statuses.slice(-STATUS_LIMIT); // If more statuses than limit, reduce to limit
         }
     },
+    
     buyBook() {
         if (this.dollars >= 5) {
             let book = getRandomBook();
@@ -34,6 +35,10 @@ document.addEventListener('alpine:init', () => {
             this.bookCount += 1;
             this.booksPurchased += 1;
         }
+    },
+
+    get win() {
+        return this.booksPurchased >= 1000;
     }
   }))
 });
