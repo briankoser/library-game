@@ -6,17 +6,29 @@ document.addEventListener('alpine:init', () => {
 	bookCount: 0,
 	booksPurchased: 0,
 	dollars: 0,
+    income: 1,
+    incomeIncreasedCount: 0,
+    jobs: [],
+    startTimestamp: '',
     statuses: [],
 
     async init() {
         setInterval(() => { this.heartBeat() }, 1000);
         createInitialConsole(this);
+        startTimestamp = new Date();
         BOOKS = await loadBooks();
         BOOKS = shuffle(BOOKS);
     },
 
     heartBeat() {
-        this.dollars += 1;
+        this.dollars += this.income;
+
+        for (const job of this.jobs) {
+            if (this.secondsPlayed % job.period == 0) {
+                this.dollars += job.income;
+                this.addStatus(`Payday, ${job.name}!`);
+            }
+        }
     },
 
     addStatus(status) {
@@ -26,7 +38,6 @@ document.addEventListener('alpine:init', () => {
             this.statuses = this.statuses.slice(-STATUS_LIMIT); // If more statuses than limit, reduce to limit
         }
     },
-    
     buyBook() {
         if (this.dollars >= 5) {
             let book = getRandomBook();
@@ -36,7 +47,32 @@ document.addEventListener('alpine:init', () => {
             this.booksPurchased += 1;
         }
     },
+    sellTv() {
+        this.dollars += 120;
+        this.incomeIncreasedCount += 1;
+    },
+    takeProofreadingJob() {
+        let proofreader = {
+            name: 'Proofreader',
+            period: 20,
+            income: 10
+        };
+        this.jobs.push(proofreader);
+        this.incomeIncreasedCount += 1;
+    },
 
+    get hasJob() {
+        return this.jobs.length > 0;
+    },
+    get incomeIncrease1() {
+        return this.booksPurchased >= 10 && this.incomeIncreasedCount < 1;
+    },
+    get jobList() {
+        return this.jobs.map(j => j.name).join((', '));
+    },
+    get secondsPlayed() {
+        return Math.trunc(((new Date()) - this.startTimestamp) / 1000);
+    },
     get win() {
         return this.booksPurchased >= 1000;
     }

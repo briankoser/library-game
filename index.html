@@ -28,10 +28,19 @@
             <div>
                 Dollars: $<span x-text="dollars"></span>
             </div>
+            <div x-show="hasJob">
+                Jobs: <span x-text="jobList"></span>
+            </div>
         </div>
 
         <div>
-            <button @click="buyBook">Buy book for $5</button>         
+            <button @click="buyBook">Buy book for $5</button>
+        </div>
+
+        <div x-show="incomeIncrease1">
+            You need more money.
+            <button @click="sellTv">Sell TV for $120</button>
+            <button @click="takeProofreadingJob">Take a proofreading job ($10/20 sec)</button>
         </div>
 
         <div x-show="win">
